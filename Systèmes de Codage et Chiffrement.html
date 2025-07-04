@@ -1,0 +1,898 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systèmes de Codage et Chiffrement</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow: hidden;
+        }
+        
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .slide h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .slide h2 {
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            color: #FFD700;
+            text-align: center;
+        }
+        
+        .slide h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #87CEEB;
+        }
+        
+        .slide p, .slide li {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .slide ul {
+            margin-left: 30px;
+        }
+        
+        .example-box {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .code-block {
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .table th, .table td {
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 12px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .table th {
+            background: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.2em;
+        }
+        
+        .animation {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .quiz-option {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover:not(:disabled) {
+            background: rgba(255,255,255,0.4);
+            transform: translateX(10px);
+        }
+        
+        .quiz-option:disabled {
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">12</span>
+    </div>
+    
+    <div class="slide-container" id="slideContainer">
+        <!-- Slide 1: Titre -->
+        <div class="slide">
+            <h1>Systèmes de Codage et Chiffrement</h1>
+            <div class="example-box">
+                <h3>Au programme :</h3>
+                <ul>
+                    <li>🔢 Systèmes de numération (Binaire, Octal, Décimal, Hexadécimal)</li>
+                    <li>🔤 Codage et représentation ASCII</li>
+                    <li>🔐 Chiffrement par substitution</li>
+                    <li>⚔️ Chiffre de César</li>
+                    <li>🗝️ Chiffre de Vigenère</li>
+                    <li>💻 Implémentation Java</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 2: Introduction aux systèmes de numération -->
+        <div class="slide">
+            <h2>Systèmes de Numération</h2>
+            <p>Un <span class="highlight">système de numération</span> est une façon de représenter les nombres.</p>
+            
+            <div class="example-box">
+                <h3>Les 4 systèmes principaux :</h3>
+                <table class="table comparison-table">
+                    <tr>
+                        <th>Système</th>
+                        <th>Base</th>
+                        <th>Chiffres utilisés</th>
+                        <th>Exemple</th>
+                    </tr>
+                    <tr>
+                        <td>Binaire</td>
+                        <td>2</td>
+                        <td>0, 1</td>
+                        <td>10110₂</td>
+                    </tr>
+                    <tr>
+                        <td>Octal</td>
+                        <td>8</td>
+                        <td>0, 1, 2, 3, 4, 5, 6, 7</td>
+                        <td>26₈</td>
+                    </tr>
+                    <tr>
+                        <td>Décimal</td>
+                        <td>10</td>
+                        <td>0, 1, 2, 3, 4, 5, 6, 7, 8, 9</td>
+                        <td>22₁₀</td>
+                    </tr>
+                    <tr>
+                        <td>Hexadécimal</td>
+                        <td>16</td>
+                        <td>0-9, A-F</td>
+                        <td>16₁₆</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Système Binaire -->
+        <div class="slide">
+            <h2>Système Binaire (Base 2)</h2>
+            <p>Le système binaire utilise uniquement <span class="highlight">0 et 1</span>. C'est le langage des ordinateurs !</p>
+            
+            <div class="grid">
+                <div class="example-box">
+                    <h3>Conversion Décimal → Binaire</h3>
+                    <p><strong>Exemple : 22₁₀</strong></p>
+                    <div class="code-block">
+22 ÷ 2 = 11 reste 0
+11 ÷ 2 = 5  reste 1
+5  ÷ 2 = 2  reste 1
+2  ÷ 2 = 1  reste 0
+1  ÷ 2 = 0  reste 1
+
+Résultat : 10110₂
+                    </div>
+                </div>
+                
+                <div class="example-box">
+                    <h3>Conversion Binaire → Décimal</h3>
+                    <p><strong>Exemple : 10110₂</strong></p>
+                    <div class="code-block">
+Position: 4 3 2 1 0
+Binaire:  1 0 1 1 0
+Valeur:   16+0+4+2+0 = 22₁₀
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Système Octal -->
+        <div class="slide">
+            <h2>Système Octal (Base 8)</h2>
+            <p>Le système octal utilise les chiffres <span class="highlight">0 à 7</span>. Souvent utilisé en informatique.</p>
+            
+            <div class="example-box">
+                <h3>Exemple de conversion : 22₁₀ → Octal</h3>
+                <div class="code-block">
+22 ÷ 8 = 2 reste 6
+2  ÷ 8 = 0 reste 2
+
+Résultat : 26₈
+                </div>
+                
+                <h3>Vérification : 26₈ → Décimal</h3>
+                <div class="code-block">
+2×8¹ + 6×8⁰ = 2×8 + 6×1 = 16 + 6 = 22₁₀ ✓
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Système Hexadécimal -->
+        <div class="slide">
+            <h2>Système Hexadécimal (Base 16)</h2>
+            <p>Le système hexadécimal utilise <span class="highlight">0-9 et A-F</span>. Très utilisé en programmation !</p>
+            
+            <div class="example-box">
+                <h3>Correspondance Hexadécimal</h3>
+                <table class="table">
+                    <tr>
+                        <th>Décimal</th><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td>
+                    </tr>
+                    <tr>
+                        <th>Hexa</th><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td>
+                    </tr>
+                </table>
+                
+                <h3>Exemple : 22₁₀ → Hexadécimal</h3>
+                <div class="code-block">
+22 ÷ 16 = 1 reste 6
+1  ÷ 16 = 0 reste 1
+
+Résultat : 16₁₆
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Codage et représentation ASCII -->
+        <div class="slide">
+            <h2>Codage et représentation ASCII</h2>
+            <p><span class="highlight">ASCII</span> (American Standard Code for Information Interchange) associe un nombre à chaque caractère.</p>
+            <p>Certaines bases comme l'Octal et le Décimal ne sont pas idéales pour la représentation ASCII contrairement au Binaire et à l'Hexadécimal.</p>
+
+            <div class="grid">
+                <div class="example-box">
+                    <h3>Exemples de codes ASCII</h3>
+                    <table class="table">
+                        <tr>
+                            <th>Caractère</th>
+                            <th>ASCII (Décimal)</th>
+                            <th>Binaire (8 bits)</th>
+                            <th>Hexadécimal</th>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td>65</td>
+                            <td>01000001</td>
+                            <td>41</td>
+                        </tr>
+                        <tr>
+                            <td>a</td>
+                            <td>97</td>
+                            <td>01100001</td>
+                            <td>61</td>
+                        </tr>
+                        <tr>
+                            <td>0</td>
+                            <td>48</td>
+                            <td>00110000</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>Espace</td>
+                            <td>32</td>
+                            <td>00100000</td>
+                            <td>20</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="example-box">
+                    <h3>Pourquoi le Binaire et l'Hexadécimal ?</h3>
+                    <p><strong>🔵 Binaire :</strong> Langage natif des ordinateurs, 8 bits = 1 byte (0 à 11111111)</p>
+                    <p><strong>🔶 Hexadécimal :</strong> Plus compacte, lisible pour l'homme, 2 hexits = 1 byte (0 à FF)</p>
+                    <p><strong>❌ Octal :</strong> Pas alignés sur les bytes, 3 chiffres octal = 1 byte (0 à 377)</p></p>
+                    <p><strong>❌ Décimal :</strong> Pas alignés sur les bytes, 3 decits = 1 byte (0 à 255)</p></p>
+
+                    <h3>Codage du mot "Hi"</h3>
+                    <div class="code-block">
+H → 72 → 01001000 → 48₁₆
+i → 105 → 01101001 → 69₁₆
+
+"Hi" en binaire : 0100100001101001
+"Hi" en hexadécimal : 4869
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 7: Introduction au chiffrement -->
+        <div class="slide">
+            <h2>Introduction au Chiffrement</h2>
+            <p>Le <span class="highlight">chiffrement</span> transforme un message clair en message secret.</p>
+            
+            <div class="example-box">
+                <h3>Vocabulaire :</h3>
+                <ul>
+                    <li><strong>Texte clair</strong> : message original</li>
+                    <li><strong>Texte chiffré</strong> : message secret</li>
+                    <li><strong>Clé</strong> : information nécessaire pour chiffrer/déchiffrer</li>
+                    <li><strong>Algorithme</strong> : méthode de transformation</li>
+                </ul>
+                
+                <h3>Types de chiffrement par substitution :</h3>
+                <div class="grid">
+                    <div>
+                        <h4>🔤 Mono-alphabétique</h4>
+                        <p>Chaque lettre est toujours remplacée par la même lettre</p>
+                        <p><strong>Exemple :</strong> A → D, B → E, C → F...</p>
+                    </div>
+                    <div>
+                        <h4>🔤🔤 Poly-alphabétique</h4>
+                        <p>Une même lettre peut être remplacée par différentes lettres</p>
+                        <p><strong>Exemple :</strong> A → D puis A → F puis A → B...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Chiffre de César -->
+        <div class="slide">
+            <h2>Chiffre de César (Mono-alphabétique)</h2>
+            <p>Chiffrement par <span class="highlight">décalage</span> de l'alphabet. Très simple mais facile à casser !</p>
+            
+            <div class="example-box">
+                <h3>Principe :</h3>
+                <p>Chaque lettre est décalée de <strong>n positions</strong> dans l'alphabet.</p>
+                
+                <h3>Exemple avec décalage de 3 :</h3>
+                <div class="code-block">
+Alphabet normal : A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+Alphabet chiffré: D E F G H I J K L M N O P Q R S T U V W X Y Z A B C
+
+Message clair :   HELLO
+Message chiffré : KHOOR
+                </div>
+                
+                <h3>Formule mathématique :</h3>
+                <div class="code-block">
+Chiffrement : (lettre + clé) mod 26
+Déchiffrement : (lettre - clé) mod 26
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: Chiffre de Vigenère -->
+        <div class="slide">
+            <h2>Chiffre de Vigenère (Poly-alphabétique)</h2>
+            <p>Chiffrement avec une <span class="highlight">clé répétée</span>. Plus sécurisé que César !</p>
+            
+            <div class="example-box">
+                <h3>Principe :</h3>
+                <p>Utilise une <strong>clé textuelle</strong> qui se répète sur le message.</p>
+                
+                <h3>Exemple avec clé "KEY" :</h3>
+                <div class="code-block">
+Message clair : H E L L O   W O R L D
+Clé répétée  : K E Y K E   Y K E Y K
+Décalages    : 10 4 24 10 4   24 10 4 24 10
+
+H + K (10) = H + 10 = R
+E + E (4)  = E + 4  = I  
+L + Y (24) = L + 24 = J
+L + K (10) = L + 10 = V
+O + E (4)  = O + 4  = S
+
+Résultat : RIJVS YOVBY
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 10: Avantages et inconvénients -->
+        <div class="slide">
+            <h2>Comparaison des Méthodes</h2>
+            
+            <div class="grid">
+                <div class="example-box">
+                    <h3>🔐 Chiffre de César</h3>
+                    <h4>✅ Avantages :</h4>
+                    <ul>
+                        <li>Simple à comprendre</li>
+                        <li>Rapide à implémenter</li>
+                        <li>Peu d'erreurs possibles</li>
+                    </ul>
+                    <h4>❌ Inconvénients :</h4>
+                    <ul>
+                        <li>Très facile à casser (25 clés possibles)</li>
+                        <li>Analyse de fréquence efficace</li>
+                        <li>Pas sécurisé</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h3>🗝️ Chiffre de Vigenère</h3>
+                    <h4>✅ Avantages :</h4>
+                    <ul>
+                        <li>Plus sécurisé que César</li>
+                        <li>Résiste à l'analyse de fréquence</li>
+                        <li>Clé de longueur variable</li>
+                    </ul>
+                    <h4>❌ Inconvénients :</h4>
+                    <ul>
+                        <li>Plus complexe</li>
+                        <li>Vulnérable si clé courte/répétitive</li>
+                        <li>Peut être cassé (méthode de Kasiski)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 11: Code Java Vigenère - Structure -->
+        <div class="slide">
+            <h2>Implémentation Java - Structure</h2>
+            
+            <div class="example-box">
+                <h3>Classe VigenereCipher :</h3>
+                <div class="code-block">
+class VigenereCipher implements Cipher<br>
+	{private final String key;<br>
+<br>
+        public VigenereCipher(String key)<br>
+        // Nettoyer et valider la clé<br>
+        {this.key = key.toUpperCase()<br>
+                      .replaceAll("[^A-Z]", "");<br>
+        if (this.key.isEmpty())<br>
+            {throw new IllegalArgumentException("Clé invalide");}}<br>
+<br>
+    public String encrypt(String text)<br>
+        {return processText(text, true);}<br>
+<br>  
+    public String decrypt(String text)<br>
+        {return processText(text, false);}}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 12: Code Java Vigenère - Algorithme -->
+        <div class="slide">
+            <h2>Implémentation Java - Algorithme</h2>
+            
+            <div class="example-box">
+                <h3>Méthode processText :</h3>
+                <div class="code-block">
+private String processText(String text, boolean encrypt)<br>
+    {StringBuilder result = new StringBuilder();<br>
+    int keyIndex = 0; // Position dans la clé<br>
+<br>
+    for (char c : text.toCharArray())<br>
+        {if (Character.isLetter(c))<br>
+            // Déterminer la base (A ou a)<br>
+            {char base = Character.isUpperCase(c) ?<br>
+                       'A' : 'a';<br>
+<br>
+            // Convertir en position 0-25<br>
+            int textChar = c - base;<br>
+            int keyChar = key.charAt(keyIndex % key.length()) - 'A';<br>
+<br>
+            // Appliquer le décalage<br>
+            int shifted = encrypt ?<br>
+                (textChar + keyChar) % 26 :<br>
+                (textChar - keyChar + 26) % 26;<br>
+<br>
+            // Reconvertir en caractère<br>
+            result.append((char) (base + shifted));<br>
+            keyIndex++;} // Avancer dans la clé<br>
+		else<br>
+            {result.append(c); // Garder non-lettres}}<br>
+    return result.toString();}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 13: Quiz -->
+        <div class="slide">
+            <h2>🧠 Quiz - Question <span id="quiz-number">1</span>/10</h2>
+            
+            <div class="example-box" id="quiz-container">
+                <h3 id="quiz-question">Combien de bits sont nécessaires pour représenter un caractère ASCII ?</h3>
+                
+                <div id="quiz-options">
+                    <button class="btn quiz-option" onclick="selectAnswer(0)">A) 4 bits</button>
+                    <button class="btn quiz-option" onclick="selectAnswer(1)">B) 8 bits</button>
+                    <button class="btn quiz-option" onclick="selectAnswer(2)">C) 16 bits</button>
+                    <button class="btn quiz-option" onclick="selectAnswer(3)">D) 32 bits</button>
+                </div>
+                
+                <div id="quiz-feedback" style="display: none; margin-top: 20px; padding: 15px; border-radius: 10px;"></div>
+                
+                <div id="quiz-controls" style="margin-top: 20px; text-align: center;">
+                    <button class="btn" onclick="nextQuizQuestion()" id="next-quiz-btn" style="display: none;">Question suivante</button>
+                    <button class="btn" onclick="showQuizResults()" id="show-results-btn" style="display: none;">Voir les résultats</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 14: Résultats du Quiz -->
+        <div class="slide">
+            <h2>🏆 Résultats du Quiz</h2>
+            
+            <div class="example-box">
+                <h3 id="final-score">Score : 0/10</h3>
+                
+                <div id="score-message">
+                    <p>Félicitations ! Vous maîtrisez bien les concepts.</p>
+                </div>
+                
+                <div id="quiz-review">
+                    <h3>📚 Points à retenir :</h3>
+                    <ul>
+                        <li><strong>ASCII :</strong> 1 octet (8 bits/2 hexits) par caractère, idéal en binaire/hexadécimal</li>
+                        <li><strong>Binaire :</strong> langage natif des ordinateurs, bits (0 et 1)</li>
+                        <li><strong>Hexadécimal :</strong> Forme compacte, plus lisible pour l'homme, 1 hexit = 4 bits, 1 quartet, 1 nibble</li>
+                        <li><strong>César :</strong> Simple mais peu sécurisé (25 clés)</li>
+                        <li><strong>Vigenère :</strong> Plus sécurisé, clé répétée</li>
+                    </ul>
+                </div>
+                
+                <button class="btn" onclick="restartQuiz()">🔄 Refaire le quiz</button>
+                <button class="btn" onclick="goToSlide(0)">🏠 Retour au début</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="btn" onclick="previousSlide()">◀ Précédent</button>
+        <button class="btn" onclick="nextSlide()">Suivant ▶</button>
+        <button class="btn" onclick="toggleFullscreen()">Plein écran</button>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.slide').length;
+        const slideContainer = document.getElementById('slideContainer');
+        
+        // Variables pour le quiz
+        let currentQuizQuestion = 0;
+        let quizScore = 0;
+        let selectedAnswer = -1;
+        
+        const quizQuestions = [
+            {
+                question: "Combien de bits sont nécessaires pour représenter un caractère ASCII ?",
+                options: ["A) 4 bits", "B) 8 bits", "C) 16 bits", "D) 32 bits"],
+                correct: 1,
+                explanation: "ASCII utilise 8 bits (1 octet) par caractère, permettant 256 caractères différents."
+            },
+            {
+                question: "Quelle est la valeur décimale du caractère 'A' en ASCII ?",
+                options: ["A) 64", "B) 65", "C) 66", "D) 97"],
+                correct: 1,
+                explanation: "Le caractère 'A' majuscule a la valeur ASCII 65 en décimal."
+            },
+            {
+                question: "Combien vaut 1111₂ en décimal ?",
+                options: ["A) 14", "B) 15", "C) 16", "D) 17"],
+                correct: 1,
+                explanation: "1111₂ = 8+4+2+1 = 15₁₀"
+            },
+            {
+                question: "combien vaut en décimal, le carcactère alpha-numérique 'F' du système hexadécimal ?",
+                options: ["A) 14", "B) 15", "C) 16", "D) 17"],
+                correct: 1,
+                explanation: "En décimal le carcactère 'F' du système hexadécimal à la valeur 15."
+            },
+            {
+                question: "Combien de clés différentes peut-on utiliser avec le chiffre de César ?",
+                options: ["A) 24", "B) 25", "C) 26", "D) 27"],
+                correct: 1,
+                explanation: "Il y a 25 clés utiles (1 à 25), car 0 et 26 ne changent pas le texte."
+            },
+            {
+                question: "Quel est l'avantage principal du chiffre de Vigenère sur César ?",
+                options: ["A) Plus rapide", "B) Plus simple", "C) Plus sécurisé", "D) Plus compact"],
+                correct: 2,
+                explanation: "Vigenère est poly-alphabétique, donc plus sécurisé qu'un chiffrement mono-alphabétique."
+            },
+            {
+                question: "Avec César et clé=3, que devient la lettre 'X' ?",
+                options: ["A) A", "B) Y", "C) Z", "D) W"],
+                correct: 0,
+                explanation: "X + 3 = A (on revient au début de l'alphabet après Z)."
+            },
+            {
+                question: "Pourquoi l'hexadécimal est-il pratique pour l'ASCII ?",
+                options: ["A) Plus lisible", "B) 2 hexits (chiffres hexadécimaux) = 8 bits", "C) Plus rapide", "D) Plus sécurisé"],
+                correct: 1,
+                explanation: "2 hexits (chiffres hexadécimaux) représentent exactement 8 bits (1 caractère ASCII)."
+            },
+            {
+                question: "Quel type de chiffrement utilise une clé qui se répète ?",
+                options: ["A) César", "B) Mono-alphabétique", "C) Vigenère", "D) ASCII"],
+                correct: 2,
+                explanation: "Vigenère utilise une clé textuelle qui se répète sur la longueur du message."
+            },
+            {
+                question: "Quelle base n'est pas idéale pour représenter l'ASCII ?",
+                options: ["A) Binaire", "B) Octal", "C) Hexadécimal", "D) Toutes sont idéales"],
+                correct: 1,
+                explanation: "Les systèmes Octal et Décimal ne sont pas alignés sur les 8 bits d'un caractère ASCII, contrairement au Binaire et à l'Hexadécimal."
+            }
+        ];
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function updateSlide() {
+            slideContainer.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+        
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateSlide();
+        }
+        
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+        
+        // Fonctions du quiz
+        function loadQuizQuestion() {
+            if (currentQuizQuestion < quizQuestions.length) {
+                const q = quizQuestions[currentQuizQuestion];
+                document.getElementById('quiz-number').textContent = currentQuizQuestion + 1;
+                document.getElementById('quiz-question').textContent = q.question;
+                
+                const optionsContainer = document.getElementById('quiz-options');
+                optionsContainer.innerHTML = '';
+                
+                q.options.forEach((option, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn quiz-option';
+                    btn.textContent = option;
+                    btn.onclick = () => selectAnswer(index);
+                    optionsContainer.appendChild(btn);
+                });
+                
+                // Reset feedback
+                document.getElementById('quiz-feedback').style.display = 'none';
+                document.getElementById('next-quiz-btn').style.display = 'none';
+                document.getElementById('show-results-btn').style.display = 'none';
+                selectedAnswer = -1;
+            }
+        }
+        
+        function selectAnswer(answerIndex) {
+            selectedAnswer = answerIndex;
+            const q = quizQuestions[currentQuizQuestion];
+            const feedback = document.getElementById('quiz-feedback');
+            
+            // Mettre à jour les boutons
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach((btn, index) => {
+                btn.style.backgroundColor = '';
+                if (index === q.correct) {
+                    btn.style.backgroundColor = '#4CAF50'; // Vert pour la bonne réponse
+                } else if (index === answerIndex && index !== q.correct) {
+                    btn.style.backgroundColor = '#f44336'; // Rouge pour la mauvaise réponse
+                }
+                btn.disabled = true;
+            });
+            
+            // Afficher le feedback
+            feedback.style.display = 'block';
+            if (answerIndex === q.correct) {
+                feedback.style.backgroundColor = 'rgba(76, 175, 80, 0.3)';
+                feedback.innerHTML = `<strong>✅ Correct !</strong><br>${q.explanation}`;
+                quizScore++;
+            } else {
+                feedback.style.backgroundColor = 'rgba(244, 67, 54, 0.3)';
+                feedback.innerHTML = `<strong>❌ Incorrect.</strong><br>${q.explanation}`;
+            }
+            
+            // Afficher le bouton suivant
+            if (currentQuizQuestion < quizQuestions.length - 1) {
+                document.getElementById('next-quiz-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('show-results-btn').style.display = 'inline-block';
+            }
+        }
+        
+        function nextQuizQuestion() {
+            currentQuizQuestion++;
+            loadQuizQuestion();
+        }
+        
+        function showQuizResults() {
+            // Aller à la slide des résultats
+            currentSlide = totalSlides - 1;
+            updateSlide();
+            
+            // Afficher le score
+            document.getElementById('final-score').textContent = `Score : ${quizScore}/${quizQuestions.length}`;
+            
+            // Message selon le score
+            const scoreMessage = document.getElementById('score-message');
+            const percentage = (quizScore / quizQuestions.length) * 100;
+            
+            if (percentage >= 80) {
+                scoreMessage.innerHTML = '<p>🎉 Excellent ! Vous maîtrisez parfaitement les concepts.</p>';
+                scoreMessage.style.color = '#4CAF50';
+            } else if (percentage >= 60) {
+                scoreMessage.innerHTML = '<p>👍 Bien joué ! Quelques révisions et ce sera parfait.</p>';
+                scoreMessage.style.color = '#FF9800';
+            } else {
+                scoreMessage.innerHTML = '<p>📚 Il faut réviser un peu. Reprenez la présentation !</p>';
+                scoreMessage.style.color = '#f44336';
+            }
+        }
+        
+        function restartQuiz() {
+            currentQuizQuestion = 0;
+            quizScore = 0;
+            selectedAnswer = -1;
+            
+            // Retourner à la première question du quiz
+            currentSlide = totalSlides - 2;
+            updateSlide();
+            loadQuizQuestion();
+        }
+        
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Navigation au clavier
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                    previousSlide();
+                    break;
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    break;
+                case 'Home':
+                    currentSlide = 0;
+                    updateSlide();
+                    break;
+                case 'End':
+                    currentSlide = totalSlides - 1;
+                    updateSlide();
+                    break;
+            }
+        });
+        
+        // Animation d'entrée
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, index) => {
+                if (index === 0) {
+                    slide.classList.add('animation');
+                }
+            });
+            
+            // Initialiser le quiz
+            loadQuizQuestion();
+        });
+    </script>
+</body>
+</html>
